@@ -20,7 +20,7 @@ impl Shot {
     fn points(self) -> i32 {
         match self {
             Shot::Bullseye => 5,
-            Shot::Hit(x) => if x < 3 { 2 }
+            Shot::Hit(x) if x < 3.0 => 2,
             Shot::Hit(x) => 1,
             Shot::Miss => 0
         }
@@ -37,6 +37,7 @@ fn main() {
     let arrow_coords: Vec<Coord> = get_arrow_coords(5);
     let mut shots: Vec<Shot> = Vec::new();
 
+    
     // 2. For each coord in arrow_coords:
     //
     //   A. Call `coord.print_description()`
@@ -45,7 +46,6 @@ fn main() {
     //      - Less than 1.0 -- `Shot::Bullseye`
     //      - Between 1.0 and 5.0 -- `Shot::Hit(value)`
     //      - Greater than 5.0 -- `Shot::Miss`
-
 
     let mut total = 0;
     // 3. Finally, loop through each shot in shots and add its points to total
