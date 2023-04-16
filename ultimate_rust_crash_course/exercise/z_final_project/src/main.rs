@@ -49,10 +49,24 @@ fn main() {
             // Improve the blur implementation -- see the blur() function below
             blur(infile, outfile);
         }
+        "brighten" =>{
+            if args.len() != 2 {
+                print_usage_and_exit();
+            }
+            let infile = args.remove(0);
+            let outfile = args.remove(0);
 
-        // **OPTION**
-        // Brighten -- see the brighten() function below
+            brighten(infile, outfile);
+        }
+        "crop" =>{
+            if args.len() != 2 {
+                print_usage_and_exit();
+            }
+            let infile = args.remove(0);
+            let outfile = args.remove(0);
 
+            crop(infile, outfile);
+        }
         // **OPTION**
         // Crop -- see the crop() function below
 
@@ -87,7 +101,9 @@ fn main() {
 fn print_usage_and_exit() {
     println!("USAGE (when in doubt, use a .png extension on your filenames)");
     println!("blur INFILE OUTFILE");
+    println!("brighten INFILE OUTFILE");
     println!("fractal OUTFILE");
+    println!("crop INFILE OUTFILE");
     // **OPTION**
     // Print useful information about what subcommands and arguments you can use
     // println!("...");
@@ -106,25 +122,26 @@ fn blur(infile: String, outfile: String) {
 }
 
 fn brighten(infile: String, outfile: String) {
+    let img = image::open(infile).expect("Failed to open INFILE");
     // See blur() for an example of how to open / save an image.
-
     // .brighten() takes one argument, an i32.  Positive numbers brighten the
     // image. Negative numbers darken it.  It returns a new image.
-
+    let result_img = img.brighten(15);
     // Challenge: parse the brightness amount from the command-line and pass it
     // through to this function.
+    result_img.save(outfile).expect("Failed writing OUTFILE");
 }
 
 fn crop(infile: String, outfile: String) {
-    // See blur() for an example of how to open an image.
+    let mut img = image::open(infile).expect("Failed to open INFILE");
 
     // .crop() takes four arguments: x: u32, y: u32, width: u32, height: u32
     // You may hard-code them, if you like.  It returns a new image.
-
+    let result_img = img.crop(200, 200, 200, 200);
     // Challenge: parse the four values from the command-line and pass them
     // through to this function.
 
-    // See blur() for an example of how to save the image.
+    result_img.save(outfile).expect("Failed writing OUTFILE");
 }
 
 fn rotate(infile: String, outfile: String) {
