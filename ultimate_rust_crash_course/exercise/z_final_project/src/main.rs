@@ -94,10 +94,6 @@ fn main() {
 
             grayscale(infile, outfile);
         }
-
-        // **OPTION**
-        // Grayscale -- see the grayscale() function below
-
         // A VERY DIFFERENT EXAMPLE...a really fun one. :-)
         "fractal" => {
             if args.len() != 1 {
@@ -126,6 +122,7 @@ fn print_usage_and_exit() {
     println!("rotate INFILE OUTFILE");
     println!("invert INFILE OUTFILE");
     println!("grayscale INFILE OUTFILE");
+    println!("fractal OUTFILE");
     // **OPTION**
     // println!("...");
     std::process::exit(-1);
@@ -194,11 +191,11 @@ fn invert(infile: String, outfile: String) {
 }
 
 fn grayscale(infile: String, outfile: String) {
-    // See blur() for an example of how to open an image.
+    let mut img = image::open(infile).expect("Failed to open INFILE");
 
-    // .grayscale() takes no arguments. It returns a new image.
+    let result_img = img.grayscale();
 
-    // See blur() for an example of how to save the image.
+    result_img.save(outfile).expect("Failed to writing OUTFILE");
 }
 
 fn generate(outfile: String) {
