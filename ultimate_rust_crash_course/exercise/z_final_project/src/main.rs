@@ -67,9 +67,15 @@ fn main() {
 
             crop(infile, outfile);
         }
-        // **OPTION**
-        // Crop -- see the crop() function below
+        "rotate" => {
+            if args.len() != 2 {
+                print_usage_and_exit();
+            }
+            let infile = args.remove(0);
+            let outfile = args.remove(0);
 
+            rotate(infile, outfile);
+        }
         // **OPTION**
         // Rotate -- see the rotate() function below
 
@@ -104,14 +110,13 @@ fn print_usage_and_exit() {
     println!("brighten INFILE OUTFILE");
     println!("fractal OUTFILE");
     println!("crop INFILE OUTFILE");
+    println!("rotate INFILE OUTFILE");
     // **OPTION**
-    // Print useful information about what subcommands and arguments you can use
     // println!("...");
     std::process::exit(-1);
 }
 
 fn blur(infile: String, outfile: String) {
-    // Here's how you open an existing image file
     let img = image::open(infile).expect("Failed to open INFILE.");
     // **OPTION**
     // Parse the blur amount (an f32) from the command-line and pass it through
@@ -123,12 +128,9 @@ fn blur(infile: String, outfile: String) {
 
 fn brighten(infile: String, outfile: String) {
     let img = image::open(infile).expect("Failed to open INFILE");
-    // See blur() for an example of how to open / save an image.
     // .brighten() takes one argument, an i32.  Positive numbers brighten the
     // image. Negative numbers darken it.  It returns a new image.
     let result_img = img.brighten(15);
-    // Challenge: parse the brightness amount from the command-line and pass it
-    // through to this function.
     result_img.save(outfile).expect("Failed writing OUTFILE");
 }
 
@@ -145,8 +147,11 @@ fn crop(infile: String, outfile: String) {
 }
 
 fn rotate(infile: String, outfile: String) {
-    // See blur() for an example of how to open an image.
+    let mut img = image::open(infile).expect("Failed to open INFILE");
 
+    let result_img = img.rotate180();
+
+    result_img.save(outfile).expect("Failed to writing OUTFILE");
     // There are 3 rotate functions to choose from (all clockwise):
     //   .rotate90()
     //   .rotate180()
