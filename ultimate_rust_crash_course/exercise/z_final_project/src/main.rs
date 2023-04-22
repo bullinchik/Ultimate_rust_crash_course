@@ -76,11 +76,24 @@ fn main() {
 
             rotate(infile, outfile);
         }
-        // **OPTION**
-        // Rotate -- see the rotate() function below
+        "invert" => {
+            if args.len() != 2{
+                print_usage_and_exit();
+            }
+            let infile = args.remove(0);
+            let outfile = args.remove(0);
 
-        // **OPTION**
-        // Invert -- see the invert() function below
+            invert(infile, outfile);
+        }
+        "grayscale" =>{
+            if args.len() != 2{
+                print_usage_and_exit();
+            }
+            let infile = args.remove(0);
+            let outfile = args.remove(0);
+
+            grayscale(infile, outfile);
+        }
 
         // **OPTION**
         // Grayscale -- see the grayscale() function below
@@ -111,6 +124,8 @@ fn print_usage_and_exit() {
     println!("fractal OUTFILE");
     println!("crop INFILE OUTFILE");
     println!("rotate INFILE OUTFILE");
+    println!("invert INFILE OUTFILE");
+    println!("grayscale INFILE OUTFILE");
     // **OPTION**
     // println!("...");
     std::process::exit(-1);
@@ -165,6 +180,11 @@ fn rotate(infile: String, outfile: String) {
 }
 
 fn invert(infile: String, outfile: String) {
+    let mut img = image::open(infile).expect("Failed to open INFILE");
+
+    let result_img = img.invert();
+
+    img.save(outfile).expect("Failed to writing OUTFILE");
     // See blur() for an example of how to open an image.
 
     // .invert() takes no arguments and converts the image in-place, so you
